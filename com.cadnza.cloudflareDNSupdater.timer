@@ -1,0 +1,10 @@
+[Unit]
+Description="Updates a cloudflare record every 3 minutes (ideal for dynamic DNS)"
+
+[Timer]
+OnBootSec=180
+OnUnitActiveSec=180
+AccuracySec=1s
+
+[Install]
+WantedBy=timers.target
