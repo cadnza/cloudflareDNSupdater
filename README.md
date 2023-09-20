@@ -8,13 +8,22 @@ Thing updates the IP of your target record to the IP obtained from `dynamicdns.p
 
 ## Setup
 
-### 1. Symlink this directory into `system`
+### 1. Symlink this directory and the services it contains
 
 ```
-ln -s . /etc/systemd/system
+THIS NEEDS TO CHANGE #TEMP
+sudo ln -s ~/Repos/cloudflareDNSupdater /etc/systemd/system/cloudflareDNSupdater
+sudo ln -s ~/Repos/cloudflareDNSupdater/com.cadnza.cloudflareDNSupdater.service /etc/systemd/system/
+sudo ln -s ~/Repos/cloudflareDNSupdater/com.cadnza.cloudflareDNSupdater.timer /etc/systemd/system/
 ```
 
-### 2. Write variables to files
+### 2. Reload the `systemctl` daemon to make it aware of the new files
+
+```
+sudo systemctl daemon-reload
+```
+
+### 3. Write variables to files
 
 ```
 echo "[your Cloudflare email]" > auth_email
@@ -32,8 +41,8 @@ echo "[the record identifier of your target DNS record]" > record_identifier
 echo "[the zone identifier of your record's zone]" > zone_identifier
 ```
 
-### 3. Start the service
+### 4. Start the service
 
 ```
-sudo systemctl enable /etc/systemd/service/cloudflareDNSupdater/com.cadnza/cloudflareDNSupdater.service
+sudo systemctl enable /etc/systemd/system/cloudflareDNSupdater/com.cadnza.cloudflareDNSupdater.timer
 ```

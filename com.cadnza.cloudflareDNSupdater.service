@@ -9,6 +9,7 @@ Type=simple
 ExecStart=/etc/systemd/system/com.cadnza.cloudflareDNSupdater.service/main.sh
 Restart=always
 RestartSec=60
+WorkingDirectory=/etc/systemd/system/cloudflareDNSupdater
 
 [Install]
 WantedBy=multi-user.target
