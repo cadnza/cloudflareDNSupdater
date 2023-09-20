@@ -1,5 +1,5 @@
 [Unit]
-Description="Updates a cloudflare record every 3 minutes (ideal for dynamic DNS)"
+Description="Updates a Cloudflare record every 3 minutes (ideal for dynamic DNS)"
 
 [Timer]
 OnBootSec=180

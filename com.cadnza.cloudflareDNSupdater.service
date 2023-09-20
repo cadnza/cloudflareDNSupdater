@@ -1,5 +1,5 @@
 [Unit]
-Description="Updates a cloudflare record (ideal for dynamic DNS)"
+Description="Updates a Cloudflare record (ideal for dynamic DNS)"
 Documentation="https://www.github.com/cadnza/cloudflareDNSupdater.git"
 Wants=network-online.target
 After=network-online.target
