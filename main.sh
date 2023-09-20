@@ -31,14 +31,17 @@ fIp=ip
 
 # Format data
 data=$(
-	echo "{
-		\"content\": \"$ip\",
-		\"name\": \"access\",
-		\"proxied\": false,
-		\"type\": \"A\",
-		\"comment\": \"Auto-updated domain verification record\",
-		\"ttl\": 1
-	}" | jq -r
+	jq \
+		-nr \
+		--arg ip $ip \
+		'{
+			content: $ip,
+			name: "access",
+			proxied: false,
+			type: "A",
+			comment: "Auto-updated domain verification record",
+			ttl: 1
+		}'
 )
 
 # Update record
