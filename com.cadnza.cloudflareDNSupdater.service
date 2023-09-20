@@ -6,7 +6,7 @@ After=network-online.target
 
 [Service]
 Type=simple
-ExecStart=/etc/systemd/system/com.cadnza.cloudflareDNSupdater.service/main.sh
+ExecStart=/etc/systemd/system/cloudflareDNSupdater/main.sh
 Restart=always
 RestartSec=60
 WorkingDirectory=/etc/systemd/system/cloudflareDNSupdater
