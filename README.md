@@ -43,5 +43,6 @@ echo "[the zone identifier of your record's zone]" > zone_identifier
 ### 4. Start the service
 
 ```
-sudo systemctl enable /etc/systemd/system/cloudflareDNSupdater/com.cadnza.cloudflareDNSupdater.timer
+sudo systemctl enable com.cadnza.cloudflareDNSupdater.timer
+sudo systemctl start com.cadnza.cloudflareDNSupdater.timer
 ```
