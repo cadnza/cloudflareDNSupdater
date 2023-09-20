@@ -11,7 +11,6 @@ Thing updates the IP of your target record to the IP obtained from `dynamicdns.p
 ### 1. Symlink this directory and the services it contains
 
 ```
-THIS NEEDS TO CHANGE #TEMP
 sudo ln -s ~/Repos/cloudflareDNSupdater /etc/systemd/system/cloudflareDNSupdater
 sudo ln -s ~/Repos/cloudflareDNSupdater/com.cadnza.cloudflareDNSupdater.service /etc/systemd/system/
 sudo ln -s ~/Repos/cloudflareDNSupdater/com.cadnza.cloudflareDNSupdater.timer /etc/systemd/system/
