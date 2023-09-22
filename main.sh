@@ -26,7 +26,15 @@ dirData=/etc/com.cadnza.cloudflareDNSupdater
 [ -d $dirData ] || mkdir $dirData
 
 # Get IP
-ip=$(curl -s dynamicdns.park-your-domain.com/getip)
+domainForIp="dynamicdns.park-your-domain.com/getip"
+ip=$(curl -s $domainForIp) || {
+	echo "Couldn't get external IP from $domainForIp" >&2
+	exit 1
+}
+[ -z $ip ] && {
+	echo "No IP set after successful curl of $domainForIp" >&2
+	exit 1
+}
 
 # Compare new IP with old IP
 doUpdate=0
