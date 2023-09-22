@@ -11,7 +11,7 @@ Thing updates the IP of your target record to the IP obtained from `dynamicdns.p
 ### 1. Symlink this directory and the services it contains
 
 ```
-sudo ln -s ~/Repos/cloudflareDNSupdater /etc/systemd/system/cloudflareDNSupdater
+sudo ln -s ~/Repos/cloudflareDNSupdater /etc/systemd/system/com.cadnza.cloudflareDNSupdater.service.d
 sudo ln -s ~/Repos/cloudflareDNSupdater/com.cadnza.cloudflareDNSupdater.service /etc/systemd/system/
 sudo ln -s ~/Repos/cloudflareDNSupdater/com.cadnza.cloudflareDNSupdater.timer /etc/systemd/system/
 ```
@@ -22,22 +22,21 @@ sudo ln -s ~/Repos/cloudflareDNSupdater/com.cadnza.cloudflareDNSupdater.timer /e
 sudo systemctl daemon-reload
 ```
 
-### 3. Write variables to files
+### 3. Set environment variables
+
+Configure the service
 
 ```
-echo "[your Cloudflare email]" > auth_email
+sudo systemctl edit com.cadnza.cloudflareDNSupdater.service
 ```
 
-```
-echo "[your global API key]" > auth_key
-```
+to define the following variables:
 
 ```
-echo "[the record identifier of your target DNS record]" > record_identifier
-```
-
-```
-echo "[the zone identifier of your record's zone]" > zone_identifier
+Environment="AUTH_EMAIL=[Your CloudFlare email]"
+Environment="AUTH_KEY=[Your global API key]"
+Environment="RECORD_IDENTIFIER=[The record identifier of the record you'd like to update]"
+Environment="ZONE_IDENTIFIER=[The zone identifier of that record's zones]"
 ```
 
 ### 4. Start the service

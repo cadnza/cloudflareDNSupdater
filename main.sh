@@ -1,28 +1,36 @@
 #!/usr/bin/env bash
 
-# Make sure files exist
-filesExist=1
-[ -f $auth_email ] || filesExist=0
-[ -f $auth_key ] || filesExist=0
-[ -f $record_identifier ] || filesExist=0
-[ -f $zone_identifier ] || filesExist=0
-[ $filesExist = 1 ] || {
-	echo "Missing configuration file(s)"
+# Make sure variables are set
+varsSet=1
+[ -z $AUTH_EMAIL ] && varsSet=0
+[ -z $AUTH_KEY ] && varsSet=0
+[ -z $RECORD_IDENTIFIER ] && varsSet=0
+[ -z $ZONE_IDENTIFIER ] && varsSet=0
+[ $varsSet = 1 ] || {
+	echo "Please set the following vars:
+	AUTH_EMAIL
+	AUTH_KEY
+	RECORD_IDENTIFIER
+	ZONE_IDENTIFIER" >&2
 	exit 1
 }
 
 # Make sure jq is installed
 which jq &> /dev/null || {
-	echo "jq not installed"
+	echo "jq not installed" >&2
 	exit 1
 }
+
+# Create data folder
+dirData=/etc/com.cadnza.cloudflareDNSupdater
+[ -d $dirData ] || mkdir $dirData
 
 # Get IP
 ip=$(curl -s dynamicdns.park-your-domain.com/getip)
 
-# Compare IP with cached IP
+# Compare new IP with old IP
 doUpdate=0
-fIp=ip
+fIp=$dirData/ip
 [ -f $fIp ] || doUpdate=1
 [ $doUpdate = 0 ] && [ $(cat $fIp) = $ip ] || doUpdate=1
 
@@ -47,20 +55,20 @@ data=$(
 # Update record
 response=$(
 	curl -s --request PUT \
-		--url "https://api.cloudflare.com/client/v4/zones/$(cat zone_identifier)/dns_records/$(cat record_identifier)" \
+		--url "https://api.cloudflare.com/client/v4/zones/$ZONE_IDENTIFIER/dns_records/$RECORD_IDENTIFIER" \
 		--header "Content-Type: application/json" \
-		--header "X-Auth-Key: $(cat auth_key)" \
-		--header "X-Auth-Email: $(cat auth_email)" \
+		--header "X-Auth-Key: $AUTH_KEY" \
+		--header "X-Auth-Email: $AUTH_EMAIL" \
 		--data "$data"
 )
 
 # Check for success
 [ $(echo $response | jq '.success') = 'true' ] || {
-	echo "Failed to update record"
+	echo "Failed to update record" >&2
 	exit 1
 }
 
-# Update cached IP
+# Update stored IP
 echo $ip > $fIp
 
 # Exit

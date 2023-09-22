@@ -1,5 +1,1 @@
-auth_email
-auth_key
-ip
-record_identifier
-zone_identifier
+override.conf
