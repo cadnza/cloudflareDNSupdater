@@ -1,5 +1,7 @@
 # `cloudflareDNSupdater`
 
+![](https://img.shields.io/github/v/release/cadnza/cloudflareDNSupdater)
+
 Updates a DNS record of your choosing in Cloudflare. Ideal for dynamic DNS.
 
 ## Details
