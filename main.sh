@@ -2,16 +2,18 @@
 
 # Make sure variables are set
 varsSet=1
-[ -z $AUTH_EMAIL ] && varsSet=0
-[ -z $AUTH_KEY ] && varsSet=0
-[ -z $RECORD_IDENTIFIER ] && varsSet=0
-[ -z $ZONE_IDENTIFIER ] && varsSet=0
+[ -z "$AUTH_EMAIL" ] && varsSet=0
+[ -z "$AUTH_KEY" ] && varsSet=0
+[ -z "$RECORD_IDENTIFIER" ] && varsSet=0
+[ -z "$ZONE_IDENTIFIER" ] && varsSet=0
+[ -z "$RECORD_NAME" ] && varsSet=0
 [ $varsSet = 1 ] || {
 	echo "Please set the following vars:
 	AUTH_EMAIL
 	AUTH_KEY
 	RECORD_IDENTIFIER
-	ZONE_IDENTIFIER" >&2
+	ZONE_IDENTIFIER
+	RECORD_NAME" >&2
 	exit 1
 }
 
@@ -31,7 +33,7 @@ ip=$(curl -s $domainForIp) || {
 	echo "Couldn't get external IP from $domainForIp" >&2
 	exit 1
 }
-[ -z $ip ] && {
+[ -z "$ip" ] && {
 	echo "No IP set after successful curl of $domainForIp" >&2
 	exit 1
 }
@@ -40,7 +42,7 @@ ip=$(curl -s $domainForIp) || {
 doUpdate=0
 fIp=$dirData/ip
 [ -f $fIp ] || doUpdate=1
-[ $doUpdate = 0 ] && [ $(cat $fIp) = $ip ] || doUpdate=1
+[ $doUpdate = 0 ] && [ "$(cat $fIp)" = "$ip" ] || doUpdate=1
 
 # Return if no update needed
 [ $doUpdate = 0 ] && exit 0
@@ -49,10 +51,11 @@ fIp=$dirData/ip
 data=$(
 	jq \
 		-nr \
-		--arg ip $ip \
+		--arg ip "$ip" \
+		--arg recordName "$RECORD_NAME" \
 		'{
 			content: $ip,
-			name: "access",
+			name: $recordName,
 			proxied: false,
 			type: "A",
 			comment: "Auto-updated domain verification record",
@@ -71,13 +74,13 @@ response=$(
 )
 
 # Check for success
-[ $(echo $response | jq '.success') = 'true' ] || {
+[ "$(echo $response | jq '.success')" = 'true' ] || {
 	echo "Failed to update record" >&2
 	exit 1
 }
 
 # Update stored IP
-echo $ip > $fIp
+echo "$ip" > $fIp
 
 # Exit
 exit 0

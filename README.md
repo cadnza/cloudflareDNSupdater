@@ -39,6 +39,7 @@ Environment="AUTH_EMAIL=[Your CloudFlare email]"
 Environment="AUTH_KEY=[Your global API key]"
 Environment="RECORD_IDENTIFIER=[The record identifier of the record you'd like to update]"
 Environment="ZONE_IDENTIFIER=[The zone identifier of that record's zones]"
+Environment="RECORD_NAME=[That record's name]"
 ```
 
 ### 4. Start the service
